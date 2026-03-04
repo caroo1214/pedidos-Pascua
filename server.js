@@ -7,9 +7,19 @@ const PDFDocument = require("pdfkit");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
 
-mongoose.connect("mongodb://localhost:27017/pedidosDB");
+// Servir archivos estáticos desde la raíz
+app.use(express.static(__dirname));
+
+// Ruta principal para devolver index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// Conexión a MongoDB (sin opciones antiguas)
+mongoose.connect("mongodb://localhost:27017/pedidosDB")
+  .then(() => console.log("Conectado a MongoDB"))
+  .catch(err => console.error("Error de conexión a MongoDB:", err));
 
 // Esquema de pedidos
 const pedidoSchema = new mongoose.Schema({
@@ -87,7 +97,7 @@ app.get("/pedidos/vendedor/:vendedor", async (req, res) => {
   }
 });
 
-// PDF
+// Generar PDF de un pedido
 app.get("/pedidos/:id/pdf", async (req, res) => {
   try {
     const pedido = await Pedido.findById(req.params.id);
@@ -123,4 +133,6 @@ app.get("/pedidos/:id/pdf", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Servidor corriendo en http://localhost:3000"));
+// Iniciar servidor
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

@@ -1,33 +1,5 @@
 let cart = [];
 
-// Lista de productos disponibles
-const products = [
-  { name: "Huevo n°12 blanco", price: 15000 },
-  { name: "Huevo n°12 negro", price: 15000 },
-  {name:"Huevo n°12 mixto", price: 20000 },
-  {name:"Huevo n°14 blanco", price: 20000 },
-  { name: "Huevo n°14 negro", price: 20000 },
-  {name:"Huevo n°14 mixto", price: 25000 },
-  { name: "Huevo n°16 blanco", price: 25000 },
-  { name: "Huevo n°16 negro", price: 25000 },
-  { name: "Huevo n°16 mixto", price: 25000 },
- 
-];
-
-// Renderizar botones de productos
-function renderProducts() {
-  const productsDiv = document.getElementById("products");
-  productsDiv.innerHTML = "";
-  products.forEach(p => {
-    const btn = document.createElement("button");
-    btn.innerText = `Agregar ${p.name} ($${p.price})`;
-    btn.onclick = () => addToCart(p.name, p.price);
-    productsDiv.appendChild(btn);
-    productsDiv.appendChild(document.createElement("br"));
-  });
-}
-
-// Agregar producto al carrito
 function addToCart(product, price) {
   const existingItem = cart.find(item => item.product === product);
   if (existingItem) {
@@ -38,7 +10,22 @@ function addToCart(product, price) {
   renderCart();
 }
 
-// Renderizar carrito
+function addSelectedProducts() {
+  const huevo11 = document.getElementById("huevo11").value;
+  const huevo14 = document.getElementById("huevo14").value;
+  const huevo16 = document.getElementById("huevo16").value;
+
+  if (huevo11) addToCart(`Huevo n°11 (${huevo11})`, 8000);
+  if (huevo14) addToCart(`Huevo n°14 (${huevo14})`, 13000);
+  if (huevo16) addToCart(`Huevo n°16 (${huevo16})`, 19000);
+
+  // 🔹 Limpiar selects después de agregar
+  document.getElementById("huevo11").value = "";
+  document.getElementById("huevo14").value = "";
+  document.getElementById("huevo16").value = "";
+}
+
+
 function renderCart() {
   const cartTable = document.getElementById("cartTable");
   cartTable.innerHTML = "";
@@ -57,13 +44,11 @@ function renderCart() {
   document.getElementById("total").innerText = `Total: $${total}`;
 }
 
-// Eliminar producto del carrito
 function removeFromCart(index) {
   cart.splice(index, 1);
   renderCart();
 }
 
-// Guardar pedido
 function saveOrder() {
   const vendedor = document.getElementById("sellerName").value.trim();
   const nombreCliente = document.getElementById("clientName").value.trim();
@@ -78,12 +63,7 @@ function saveOrder() {
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const order = {
-    cliente: {
-      vendedor,
-      nombreCliente,
-      localidad,
-      fechaRetiro
-    },
+    cliente: { vendedor, nombreCliente, localidad, fechaRetiro },
     carrito: cart.map(item => ({
       producto: item.product,
       precio: item.price,
@@ -109,6 +89,3 @@ function saveOrder() {
     })
     .catch(err => console.error("Error guardando pedido:", err));
 }
-
-// Inicializar productos al cargar la página
-window.onload = renderProducts;

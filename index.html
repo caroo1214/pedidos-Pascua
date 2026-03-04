@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <!-- Logo con acceso al panel admin -->
+    <div class="logo">
+      <a href="#" onclick="accesoAdmin(event)">
+        <img src="logo.jpg" alt="Logo" />
+      </a>
+    </div>
+
+    <script>
+      function accesoAdmin(event) {
+        event.preventDefault();
+        const clave = prompt("Ingrese la clave para acceder al panel:");
+        if (clave === "Bolivar108174") {
+          window.location.href = "admin.html";
+        } else {
+          alert("Clave incorrecta. Acceso denegado.");
+        }
+      }
+    </script>
+
+    <!-- Botón de consultar pedidos -->
+    <div class="pedidos-btn">
+      <button class="btn-pedidos" onclick="window.location.href='cliente.html'">
+        Consultar mis Pedidos
+      </button>
+    </div>
+  </div>
+
+  <div class="pedido">
+    <h1>Nuevo Pedido</h1>
+  </div>
+
+  <div class="main-container">
+    <!-- Columna izquierda -->
+    <div class="left-column">
+      <form id="orderForm">
+        <label>Nombre Vendedor:</label>
+        <input type="text" id="sellerName" required>
+
+        <label>Nombre Cliente:</label>
+        <input type="text" id="clientName" required>
+
+        <label>Localidad:</label>
+        <input type="text" id="clientLocalidad" required>
+
+        <label>Fecha de Retiro:</label>
+        <input type="date" id="clientRetiro" required>
+      </form>
+
+      <h2>Selecciona tu producto</h2>
+
+      <label for="huevo11">Huevo n°11 - $8000:</label>
+      <select id="huevo11">
+        <option value="">-- Elegir variante --</option>
+        <option value="Blanco">Blanco</option>
+        <option value="Negro">Negro</option>
+        <option value="Mixto">Mixto</option>
+        <option value="Leche">con Leche</option>
+      </select>
+
+      <br><br>
+
+      <label for="huevo14">Huevo n°14 - $13000:</label>
+      <select id="huevo14">
+        <option value="">-- Elegir variante --</option>
+        <option value="Blanco">Blanco</option>
+        <option value="Negro">Negro</option>
+        <option value="Mixto">Mixto</option>
+        <option value="Leche">con Leche</option>
+      </select>
+
+      <br><br>
+
+      <label for="huevo16">Huevo n°16 - $19000:</label>
+      <select id="huevo16">
+        <option value="">-- Elegir variante --</option>
+        <option value="Blanco">Blanco</option>
+        <option value="Negro">Negro</option>
+        <option value="Mixto">Mixto</option>
+        <option value="Leche">con Leche</option>
+      </select>
+
+      <br><br>
+      <button type="button" onclick="addSelectedProducts()">Agregar al carrito</button>
+    </div>
+
+    <!-- Columna derecha -->
+    <div class="right-column">
+      <h2>Carrito</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="cartTable"></tbody>
+      </table>
+      <p id="total">Total: $0</p>
+      <button onclick="saveOrder()">Guardar Pedido</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
