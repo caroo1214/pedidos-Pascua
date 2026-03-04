@@ -5,6 +5,8 @@ const path = require("path");
 const PDFDocument = require("pdfkit");
 
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
@@ -16,10 +18,16 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Conexión a MongoDB (sin opciones antiguas)
-mongoose.connect("mongodb://localhost:27017/pedidosDB")
-  .then(() => console.log("Conectado a MongoDB"))
-  .catch(err => console.error("Error de conexión a MongoDB:", err));
+// Conexión a MongoDB Atlas
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGODB_URI;
+
+mongoose.connect(MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Conectado a MongoDB Atlas"))
+.catch(err => console.error("❌ Error de conexión:", err));
 
 // Esquema de pedidos
 const pedidoSchema = new mongoose.Schema({
@@ -133,6 +141,7 @@ app.get("/pedidos/:id/pdf", async (req, res) => {
   }
 });
 
-// Iniciar servidor
-const PORT = 3000;
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+// Iniciar servidor (solo una vez)
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+});
