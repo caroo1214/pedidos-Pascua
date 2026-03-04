@@ -1,0 +1,47 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url("fondo4.jpg") no-repeat center center fixed; /* imagen de fondo */
+  background-size: cover; /* que ocupe toda la pantalla */
+  color: #333;
+  min-height: 100vh;
+}
+
+header {
+  background: rgba(44, 62, 80, 0.9); /* header oscuro para diferenciar */
+  color: white;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.85); /* fondo blanco semitransparente para que se lea bien */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: white; /* tabla con fondo sólido */
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #3498db;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}

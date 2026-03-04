@@ -1,0 +1,126 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url("fondo.jpg") no-repeat center center fixed; /* tu imagen */
+  background-size: cover;
+  color: #333;
+  min-height: 100vh;
+}
+
+/* Barra superior */
+.top-bar {
+  display: flex;
+  justify-content: space-between; /* Logo a la izquierda, botón a la derecha */
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #ddd;
+}
+
+.logo img {
+  height: 150px; /* Ajusta el tamaño del logo */
+  cursor: pointer;
+}
+
+.btn-pedidos {
+  background-color: #ff00ff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn-pedidos:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  text-align: center;
+  background: rgba(44, 62, 80, 0.9);
+  color: white;
+  padding: 20px;
+  margin: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+
+/* Contenedor principal en dos columnas */
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 30px auto;
+  gap: 20px;
+}
+
+/* Columna izquierda */
+.left-column, .right-column {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.9); /* blanco semitransparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Inputs y labels */
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Botón */
+button {
+  margin-top: 15px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #9034db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #9034db;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th {
+  background: #9034db;
+  color: white;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+#total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 10px;
+}

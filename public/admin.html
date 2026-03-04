@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Administración</title>
+  <link rel="stylesheet" href="styles-admin.css">
+</head>
+<body>
+  <h1>Panel de Administración</h1>
+
+  <!-- Filtros -->
+  <div>
+    <input type="text" id="filterSeller" placeholder="Filtrar por vendedor">
+    <button onclick="filterBySeller()">Filtrar</button>
+    <button onclick="loadOrders()">Ver todos</button>
+  </div>
+
+  <!-- Tabla de pedidos -->
+  <h2>Pedidos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Vendedor</th>
+        <th>Cliente</th>
+        <th>Localidad</th>
+        <th>Retiro</th>
+        <th>Productos</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="ordersTable"></tbody>
+  </table>
+
+  <!-- Tabla de cantidades por producto -->
+  <h2>Cantidad de cada producto</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad Total</th>
+      </tr>
+    </thead>
+    <tbody id="productQuantitiesTable"></tbody>
+  </table>
+
+  <script src="admin.js"></script>
+</body>
+</html>

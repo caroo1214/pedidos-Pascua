@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+    
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Pedidos</title>
+  <link rel="stylesheet" href="styles-client.css">
+</head>
+<body>
+  <header>
+    <h1>Consulta tus pedidos</h1>
+  </header>
+
+  <div class="container">
+    <label>Ingresa tu nombre de vendedor:</label><br>
+    <input type="text" id="clientNumberLookup" placeholder="Ej: Juan Pérez"><br>
+    <button onclick="loadClientOrders()">Ver mis pedidos</button>
+
+ <div class="table-background">
+  <h2>Mis Pedidos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Nombre Cliente</th>
+        <th>Localidad</th>
+        <th>Productos</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="clientOrdersTable"></tbody>
+  </table>
+</div>
+
+  <script src="cliente.js"></script>
+</body>
+</html>
