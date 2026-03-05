@@ -127,3 +127,19 @@ th, td {
   padding: 10px;
   text-align: center;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .btn-pedidos {
+    margin-top: 10px;
+  }
+}

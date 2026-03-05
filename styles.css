@@ -1,8 +1,13 @@
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
+/* Reset básico */
+* {
   margin: 0;
   padding: 0;
-  background: url("fondo.jpg") no-repeat center center fixed; /* tu imagen */
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: url("fondo.jpg") no-repeat center center fixed;
   background-size: cover;
   color: #333;
   min-height: 100vh;
@@ -11,32 +16,33 @@ body {
 /* Barra superior */
 .top-bar {
   display: flex;
-  justify-content: space-between; /* Logo a la izquierda, botón a la derecha */
+  justify-content: space-between;
   align-items: center;
+  background: #222;
+  color: #fff;
   padding: 10px 20px;
-  background-color: #f5f5f5;
-  border-bottom: 2px solid #ddd;
 }
 
-.logo img {
-  height: 150px; /* Ajusta el tamaño del logo */
+.top-bar .logo img {
+  height: 150px; /* Logo grande en escritorio */
   cursor: pointer;
 }
 
 .btn-pedidos {
-  background-color: #ff00ff;
-  color: white;
+  background: #ff9800;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 10px 15px;
+  color: #fff;
+  font-weight: bold;
   cursor: pointer;
   border-radius: 5px;
 }
 
 .btn-pedidos:hover {
-  background-color: #0056b3;
+  background: #e68900;
 }
 
+/* Título */
 h1 {
   text-align: center;
   background: rgba(44, 62, 80, 0.9);
@@ -46,20 +52,20 @@ h1 {
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
-
-/* Contenedor principal en dos columnas */
+/* Contenedor principal */
 .main-container {
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
   margin: 30px auto;
   gap: 20px;
+  padding: 20px;
 }
 
-/* Columna izquierda */
+/* Columnas */
 .left-column, .right-column {
   flex: 1;
-  background: rgba(255, 255, 255, 0.9); /* blanco semitransparente */
+  background: rgba(255, 255, 255, 0.9);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
@@ -72,7 +78,7 @@ label {
   margin-top: 10px;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -80,7 +86,7 @@ input {
   border-radius: 4px;
 }
 
-/* Botón */
+/* Botones */
 button {
   margin-top: 15px;
   padding: 10px 15px;
@@ -93,7 +99,7 @@ button {
 }
 
 button:hover {
-  background-color: #9034db;
+  background-color: #6d28a3;
 }
 
 /* Tabla */
@@ -101,7 +107,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 table, th, td {
@@ -123,4 +129,29 @@ th, td {
   font-weight: bold;
   text-align: right;
   margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .top-bar .logo img {
+    height: 80px; /* Logo más chico en móvil */
+  }
+
+  .btn-pedidos {
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  table, th, td {
+    font-size: 12px;
+  }
 }

@@ -1,35 +1,74 @@
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
+/* Reset básico */
+* {
   margin: 0;
   padding: 0;
-  background: url("fondo4.jpg") no-repeat center center fixed; /* imagen de fondo */
-  background-size: cover; /* que ocupe toda la pantalla */
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: url("fondo4.jpg") no-repeat center center fixed;
+  background-size: cover;
   color: #333;
   min-height: 100vh;
 }
 
+/* Header */
 header {
-  background: rgba(44, 62, 80, 0.9); /* header oscuro para diferenciar */
+  background: rgba(44, 62, 80, 0.9);
   color: white;
   padding: 20px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
+/* Contenedor principal */
 .container {
   max-width: 800px;
   margin: 30px auto;
   padding: 20px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.85); /* fondo blanco semitransparente para que se lea bien */
+  background: rgba(255, 255, 255, 0.85);
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Inputs y botones */
+label {
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+/* Tabla de pedidos */
+.table-background {
+  margin-top: 20px;
+  overflow-x: auto; /* scroll horizontal en pantallas chicas */
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-  background: white; /* tabla con fondo sólido */
+  background: white;
 }
 
 table, th, td {
@@ -44,4 +83,25 @@ th {
 th, td {
   padding: 10px;
   text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  table, th, td {
+    font-size: 12px;
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
