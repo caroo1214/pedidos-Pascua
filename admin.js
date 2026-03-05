@@ -2,7 +2,7 @@ let pedidos = []; // variable global
 
 // Cargar todos los pedidos
 function loadOrders() {
-  fetch("http://localhost:3000/pedidos")
+  fetch("/pedidos")
     .then(res => res.json())
     .then(data => {
       pedidos = data;
@@ -68,7 +68,7 @@ function filterBySeller() {
     return;
   }
 
-  fetch(`http://localhost:3000/pedidos/vendedor/${vendedor}`)
+  fetch(`/pedidos/vendedor/${vendedor}`)
     .then(res => res.json())
     .then(data => {
       pedidos = data;
@@ -108,7 +108,7 @@ function filterBySeller() {
 // Eliminar pedido
 function deleteOrder(id) {
   if (confirm("¿Seguro que quieres eliminar este pedido?")) {
-    fetch(`http://localhost:3000/pedidos/${id}`, { method: "DELETE" })
+    fetch(`/pedidos/${id}`, { method: "DELETE" })
       .then(res => res.json())
       .then(data => {
         alert(data.mensaje);
@@ -120,7 +120,7 @@ function deleteOrder(id) {
 
 // Descargar PDF
 function downloadPDF(id) {
-  window.open(`http://localhost:3000/pedidos/${id}/pdf`, "_blank");
+  window.open(`/pedidos/${id}/pdf`, "_blank");
 }
 
 // Cargar pedidos al iniciar
