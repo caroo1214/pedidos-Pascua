@@ -71,8 +71,8 @@ function saveOrder() {
     })),
     total
   };
-
-  fetch("/pedidos)", {
+  
+fetch("/pedidos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(order)

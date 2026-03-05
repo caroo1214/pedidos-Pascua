@@ -6,7 +6,7 @@ function loadClientOrders() {
     return;
   }
 
-  fetch(`http://localhost:3000/pedidos/vendedor/${vendedor}`)
+  fetch(`pedidos/vendedor/${vendedor}`)
     .then(res => res.json())
     .then(pedidos => {
       const table = document.getElementById("clientOrdersTable");
