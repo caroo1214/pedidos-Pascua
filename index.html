@@ -4,6 +4,63 @@
   <meta charset="UTF-8">
   <title>Pedidos App</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Fondo semitransparente para el modal */
+    .modal {
+      display: none; /* Oculto por defecto */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    /* Caja centrada */
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Botón de cerrar */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #000;
+    }
+
+    /* Estilo del input y botón */
+    input[type="password"] {
+      width: 90%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .modal-content button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .modal-content button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
   
@@ -11,28 +68,29 @@
   <div class="top-bar">
     <!-- Logo con acceso al panel admin -->
     <div class="logo">
-      <a href="#" onclick="accesoAdmin(event)">
+      <a href="#" onclick="mostrarLogin(event)">
         <img src="logo.jpg" alt="Logo" />
       </a>
     </div>
-
-    <script>
-      function accesoAdmin(event) {
-        event.preventDefault();
-        const clave = prompt("Ingrese la clave para acceder al panel:");
-        if (clave === "Bolivar108174") {
-          window.location.href = "admin.html";
-        } else {
-          alert("Clave incorrecta. Acceso denegado.");
-        }
-      }
-    </script>
 
     <!-- Botón de consultar pedidos -->
     <div class="pedidos-btn">
       <button class="btn-pedidos" onclick="window.location.href='cliente.html'">
         Consultar mis Pedidos
       </button>
+    </div>
+  </div>
+
+  <!-- Modal de login -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarLogin()">&times;</span>
+      <h2>Acceso al Panel</h2>
+      <form onsubmit="accesoAdmin(event)">
+        <label for="clave">Ingrese la clave:</label>
+        <input type="password" id="clave" required>
+        <button type="submit">Acceder</button>
+      </form>
     </div>
   </div>
 
@@ -112,6 +170,35 @@
       <button onclick="saveOrder()">Guardar Pedido</button>
     </div>
   </div>
+
+  <script>
+    function mostrarLogin(event) {
+      event.preventDefault();
+      document.getElementById("loginModal").style.display = "block";
+    }
+
+    function cerrarLogin() {
+      document.getElementById("loginModal").style.display = "none";
+    }
+
+    function accesoAdmin(event) {
+      event.preventDefault();
+      const clave = document.getElementById("clave").value;
+      if (clave === "Bolivar108174") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Clave incorrecta. Acceso denegado.");
+      }
+    }
+
+    // Cerrar modal si se hace clic fuera de la caja
+    window.onclick = function(event) {
+      const modal = document.getElementById("loginModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    }
+  </script>
 
   <script src="script.js"></script>
 </body>
