@@ -127,19 +127,40 @@ th, td {
   padding: 10px;
   text-align: center;
 }
-
 /* Responsive */
 @media (max-width: 768px) {
   .main-container {
     flex-direction: column;
+    padding: 10px; /* más aire en móvil */
   }
 
   .top-bar {
     flex-direction: column;
     text-align: center;
+    gap: 10px; /* separación entre elementos */
+  }
+
+  .top-bar .logo img {
+    height: 80px; /* Logo más chico en móvil */
+    max-width: 100%; /* que nunca se desborde */
   }
 
   .btn-pedidos {
     margin-top: 10px;
+    width: 100%; /* ocupa todo el ancho */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table, th, td {
+    font-size: 12px;
+    word-wrap: break-word; /* evita que se rompa el diseño */
+  }
+
+  th, td {
+    padding: 6px;
   }
 }

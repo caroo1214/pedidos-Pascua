@@ -25,7 +25,6 @@ function addSelectedProducts() {
   document.getElementById("huevo16").value = "";
 }
 
-
 function renderCart() {
   const cartTable = document.getElementById("cartTable");
   cartTable.innerHTML = "";
@@ -34,7 +33,10 @@ function renderCart() {
     row.innerHTML = `
       <td>${item.product}</td>
       <td>$${item.price}</td>
-      <td>${item.qty}</td>
+      <td>
+        <input type="number" min="1" value="${item.qty}" 
+               onchange="updateQty(${index}, this.value)">
+      </td>
       <td><button onclick="removeFromCart(${index})">Eliminar</button></td>
     `;
     cartTable.appendChild(row);
@@ -42,6 +44,11 @@ function renderCart() {
 
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   document.getElementById("total").innerText = `Total: $${total}`;
+}
+
+function updateQty(index, newQty) {
+  cart[index].qty = parseInt(newQty);
+  renderCart();
 }
 
 function removeFromCart(index) {
@@ -71,8 +78,8 @@ function saveOrder() {
     })),
     total
   };
-  
-fetch("/pedidos", {
+
+  fetch("/pedidos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(order)
