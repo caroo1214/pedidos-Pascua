@@ -4,8 +4,8 @@ const cors = require("cors");
 const path = require("path");
 const PDFDocument = require("pdfkit");
 require('dotenv').config();
-
 const app = express();
+
 
 // Middlewares
 app.use(cors());
@@ -26,7 +26,6 @@ const MONGO_URI = process.env.MONGODB_URI;
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
-
 
 
 // Esquema de pedidos
@@ -50,13 +49,47 @@ const pedidoSchema = new mongoose.Schema({
 
 const Pedido = mongoose.model("Pedido", pedidoSchema);
 
+// Configuración de Nodemailer
+const nodemailer = require('nodemailer');
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'carolinastoessel715@gmail.com',          // tu correo
+    pass: 'dnhi xqxw mdhu warx'        // contraseña de aplicación de Gmail
+  }
+});
+
+// Función para enviar correo
+function notifyAdminByEmail(order) {
+  const mailOptions = {
+    from: 'carolinastoessel715@gmail.com',
+    to: 'carolinastoessel715@gmail.com', // tu propio correo
+    subject: '📦 Nuevo pedido recibido',
+    text: `Cliente: ${order.cliente.nombreCliente}\nTotal: $${order.total}\nVendedor: ${order.cliente.vendedor}`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error enviando correo:", error);
+    } else {
+      console.log("Correo enviado:", info.response);
+    }
+  });
+}
+
 // Crear pedido
 app.post("/pedidos", async (req, res) => {
   try {
     const nuevoPedido = new Pedido(req.body);
     await nuevoPedido.save();
+
+    // Enviar correo al admin
+    notifyAdminByEmail(nuevoPedido);
+
+    // Mantener la respuesta original
     res.json({ id: nuevoPedido._id, mensaje: "Pedido guardado correctamente" });
   } catch (error) {
+    console.error("Error al guardar el pedido:", error);
     res.status(500).json({ error: "Error al guardar el pedido" });
   }
 });
