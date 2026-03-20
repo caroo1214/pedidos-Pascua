@@ -48,6 +48,19 @@ const pedidoSchema = new mongoose.Schema({
 });
 
 const Pedido = mongoose.model("Pedido", pedidoSchema);
+/**//*
+  const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // true para 465, false para 587
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
+  }
+});
+ */
+ 
+
 
 // Configuración de Nodemailer
 const nodemailer = require('nodemailer');

@@ -20,6 +20,15 @@ h1, h2 {
   color: #2c3e50;
 }
 
+
+/* Aplica a cada fila de pedido */
+.pedido-detalle {
+  display: block;       /* fuerza que cada dato ocupe toda la línea */
+  margin-bottom: 6px;   /* espacio entre cada dato */
+}
+
+
+
 label {
   font-weight: bold;
   margin-top: 10px;
