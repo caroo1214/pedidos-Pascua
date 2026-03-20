@@ -14,15 +14,22 @@ function addSelectedProducts() {
   const huevo11 = document.getElementById("huevo11").value;
   const huevo14 = document.getElementById("huevo14").value;
   const huevo16 = document.getElementById("huevo16").value;
+  const huevo25 = document.getElementById("huevo25").value;
+  const huevo30 = document.getElementById("huevo30").value;
+  
 
   if (huevo11) addToCart(`Huevo n°11 (${huevo11})`, 8000);
   if (huevo14) addToCart(`Huevo n°14 (${huevo14})`, 13000);
   if (huevo16) addToCart(`Huevo n°16 (${huevo16})`, 19000);
+  if (huevo25) addToCart(`Huevo n°25 (${huevo25})`, 45000);
+  if (huevo30) addToCart(`Huevo n°30 (${huevo30})`, 75000);
 
   // 🔹 Limpiar selects después de agregar
   document.getElementById("huevo11").value = "";
   document.getElementById("huevo14").value = "";
   document.getElementById("huevo16").value = "";
+  document.getElementById("huevo25").value = "";
+  document.getElementById("huevo30").value = "";
 }
 
 function renderCart() {
