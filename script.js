@@ -17,12 +17,19 @@ function addSelectedProducts() {
   const huevo25 = document.getElementById("huevo25").value;
   const huevo30 = document.getElementById("huevo30").value;
   
+  // 🔹 Rosca de Pascua
+  const roscaSelect = document.getElementById("roscaPascua");
+  const roscaOption = roscaSelect.options[roscaSelect.selectedIndex];
+  const roscaValue = roscaOption.value;
+  const roscaPrice = roscaOption.getAttribute("data-price");
 
   if (huevo11) addToCart(`Huevo n°11 (${huevo11})`, 8000);
   if (huevo14) addToCart(`Huevo n°14 (${huevo14})`, 13000);
   if (huevo16) addToCart(`Huevo n°16 (${huevo16})`, 19000);
   if (huevo25) addToCart(`Huevo n°25 (${huevo25})`, 45000);
   if (huevo30) addToCart(`Huevo n°30 (${huevo30})`, 75000);
+  if (roscaValue) addToCart(`Rosca de Pascua (${roscaValue})`, parseInt(roscaPrice));
+
 
   // 🔹 Limpiar selects después de agregar
   document.getElementById("huevo11").value = "";
@@ -30,6 +37,8 @@ function addSelectedProducts() {
   document.getElementById("huevo16").value = "";
   document.getElementById("huevo25").value = "";
   document.getElementById("huevo30").value = "";
+    document.getElementById("roscaPascua").value = "";
+
 }
 
 function renderCart() {
