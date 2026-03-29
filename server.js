@@ -3,15 +3,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const PDFDocument = require("pdfkit");
-require('dotenv').config();
-const app = express();
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
+const app = express();
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
-
-// Servir archivos estáticos desde la raíz
 app.use(express.static(__dirname));
 
 // Ruta principal para devolver index.html
@@ -21,12 +20,11 @@ app.get("/", (req, res) => {
 
 // Conexión a MongoDB Atlas
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGODB_URI;
+const MONGO_URI = process.env.MONGODB_URI || "mongodb+srv://carolina1214:bolivar10@cluster0.3hptnim.mongodb.net/?appName=Cluster0";
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ Conectado a MongoDB Atlas"))
   .catch(err => console.error("❌ Error de conexión:", err));
-
 
 // Esquema de pedidos
 const pedidoSchema = new mongoose.Schema({
@@ -44,40 +42,27 @@ const pedidoSchema = new mongoose.Schema({
     }
   ],
   total: Number,
-  fecha: { type: Date, default: Date.now }
+  fecha: { type: Date, default: Date.now },
+  estado: { type: String, default: "Pendiente" }, // Pendiente / Entregado
+  impreso: { type: Boolean, default: false }      // true / false
 });
 
 const Pedido = mongoose.model("Pedido", pedidoSchema);
-/**//*
-  const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // true para 465, false para 587
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS
-  }
-});
- */
- 
 
-
-// Configuración de Nodemailer
-const nodemailer = require('nodemailer');
+// Configuración de Nodemailer (usa variables de entorno para seguridad)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
-    user: 'carolinastoessel715@gmail.com',          // tu correo
-    pass: 'dnhi xqxw mdhu warx'        // contraseña de aplicación de Gmail
+    user: process.env.GMAIL_USER,   // tu correo
+    pass: process.env.GMAIL_PASS    // contraseña de aplicación
   }
 });
 
-// Función para enviar correo
 function notifyAdminByEmail(order) {
   const mailOptions = {
-    from: 'carolinastoessel715@gmail.com',
-    to: 'carolinastoessel715@gmail.com', // tu propio correo
-    subject: '📦 Nuevo pedido recibido',
+    from: process.env.GMAIL_USER,
+    to: process.env.GMAIL_USER, // tu propio correo
+    subject: "📦 Nuevo pedido recibido",
     text: `Cliente: ${order.cliente.nombreCliente}\nTotal: $${order.total}\nVendedor: ${order.cliente.vendedor}`
   };
 
@@ -90,16 +75,19 @@ function notifyAdminByEmail(order) {
   });
 }
 
+//
+// RUTAS
+//
+
 // Crear pedido
 app.post("/pedidos", async (req, res) => {
   try {
     const nuevoPedido = new Pedido(req.body);
     await nuevoPedido.save();
 
-    // Enviar correo al admin
+    // Notificar por correo
     notifyAdminByEmail(nuevoPedido);
 
-    // Mantener la respuesta original
     res.json({ id: nuevoPedido._id, mensaje: "Pedido guardado correctamente" });
   } catch (error) {
     console.error("Error al guardar el pedido:", error);
@@ -107,13 +95,38 @@ app.post("/pedidos", async (req, res) => {
   }
 });
 
-// Listar todos los pedidos
+// Obtener todos los pedidos
 app.get("/pedidos", async (req, res) => {
   try {
     const pedidos = await Pedido.find().sort({ fecha: -1 });
     res.json(pedidos);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener pedidos" });
+  }
+});
+
+// Obtener pedidos por vendedor
+app.get("/pedidos/vendedor/:vendedor", async (req, res) => {
+  try {
+    const pedidos = await Pedido.find({ "cliente.vendedor": req.params.vendedor }).sort({ fecha: -1 });
+    res.json(pedidos);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener pedidos del vendedor" });
+  }
+});
+
+// Actualizar pedido (estado o impreso)
+app.put("/pedidos/:id", async (req, res) => {
+  try {
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { returnDocument: "after" } // reemplaza new:true
+    );
+    if (!pedidoActualizado) return res.status(404).json({ error: "Pedido no encontrado" });
+    res.json({ mensaje: "Pedido actualizado correctamente", pedido: pedidoActualizado });
+  } catch (error) {
+    res.status(500).json({ error: "Error al actualizar el pedido" });
   }
 });
 
@@ -124,30 +137,6 @@ app.delete("/pedidos/:id", async (req, res) => {
     res.json({ mensaje: "Pedido eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ error: "Error al eliminar el pedido" });
-  }
-});
-
-// Editar pedido
-app.put("/pedidos/:id", async (req, res) => {
-  try {
-    const pedidoActualizado = await Pedido.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json({ mensaje: "Pedido actualizado correctamente", pedido: pedidoActualizado });
-  } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el pedido" });
-  }
-});
-
-// Filtrar por vendedor
-app.get("/pedidos/vendedor/:vendedor", async (req, res) => {
-  try {
-    const pedidos = await Pedido.find({ "cliente.vendedor": req.params.vendedor }).sort({ fecha: -1 });
-    res.json(pedidos);
-  } catch (error) {
-    res.status(500).json({ error: "Error al obtener pedidos del vendedor" });
   }
 });
 
@@ -179,6 +168,8 @@ app.get("/pedidos/:id/pdf", async (req, res) => {
     doc.moveDown();
 
     doc.text(`Total: $${pedido.total}`, { align: "right" });
+    doc.text(`Estado: ${pedido.estado}`, { align: "right" });
+    doc.text(`Impreso: ${pedido.impreso ? "Sí" : "No"}`, { align: "right" });
     doc.text(`Fecha: ${new Date(pedido.fecha).toLocaleString()}`, { align: "right" });
 
     doc.end();
@@ -187,7 +178,7 @@ app.get("/pedidos/:id/pdf", async (req, res) => {
   }
 });
 
-// Iniciar servidor (solo una vez)
+// Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });

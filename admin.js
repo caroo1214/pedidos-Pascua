@@ -1,5 +1,6 @@
 let pedidos = []; // variable global
 
+// Cargar todos los pedidos
 function loadOrders() {
   fetch("/pedidos")
     .then(res => res.json())
@@ -12,12 +13,13 @@ function loadOrders() {
     .catch(err => console.error("Error cargando pedidos:", err));
 }
 
+// Renderizar tabla de pedidos
 function renderOrdersTable() {
   const table = document.getElementById("ordersTable");
   table.innerHTML = "";
 
   pedidos.forEach(p => {
-    if (!p.estado) p.estado = "Pendiente";
+    if (!p.estado) p.estado = "Pendiente"; // estado inicial
     if (p.impreso === undefined) p.impreso = false; // nuevo campo
 
     const row = document.createElement("tr");
@@ -53,10 +55,11 @@ function renderOrdersTable() {
   });
 }
 
+// Renderizar tabla de cantidades por producto
 function renderProductQuantities(pedidos) {
   const quantities = {};
   pedidos.forEach(p => {
-    if (p.estado === "Pendiente") {
+    if (p.estado === "Pendiente") { // solo contar pendientes
       p.carrito.forEach(item => {
         if (!quantities[item.producto]) {
           quantities[item.producto] = 0;
@@ -76,6 +79,7 @@ function renderProductQuantities(pedidos) {
   });
 }
 
+// Filtrar pedidos por vendedor
 function filterBySeller() {
   const vendedor = document.getElementById("filterSeller").value.trim();
   if (!vendedor) {
@@ -94,6 +98,7 @@ function filterBySeller() {
     .catch(err => console.error("Error filtrando pedidos:", err));
 }
 
+// Eliminar pedido
 function deleteOrder(id) {
   if (confirm("¿Seguro que quieres eliminar este pedido?")) {
     fetch(`/pedidos/${id}`, { method: "DELETE" })
@@ -106,24 +111,49 @@ function deleteOrder(id) {
   }
 }
 
+// Descargar PDF
 function downloadPDF(id) {
   window.open(`/pedidos/${id}/pdf`, "_blank");
 }
 
+// Cambiar estado Pendiente <-> Entregado y guardar en servidor
 function toggleEstado(id) {
   const pedido = pedidos.find(p => p._id === id);
   if (!pedido) return;
+
   pedido.estado = pedido.estado === "Pendiente" ? "Entregado" : "Pendiente";
-  renderOrdersTable();
-  renderProductQuantities(pedidos);
+
+  fetch(`/pedidos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ estado: pedido.estado })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Estado actualizado:", data);
+    renderOrdersTable();
+    renderProductQuantities(pedidos);
+  })
+  .catch(err => console.error("Error actualizando estado:", err));
 }
 
-// Nuevo: marcar como impreso
+// Marcar como impreso y guardar en servidor
 function toggleImpreso(id, checked) {
   const pedido = pedidos.find(p => p._id === id);
   if (!pedido) return;
+
   pedido.impreso = checked;
-  // Podés agregar aquí un fetch PUT para guardar en backend si querés
+
+  fetch(`/pedidos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ impreso: pedido.impreso })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Impreso actualizado:", data);
+  })
+  .catch(err => console.error("Error actualizando impreso:", err));
 }
 
 window.onload = loadOrders;
